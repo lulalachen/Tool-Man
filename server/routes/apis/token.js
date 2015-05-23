@@ -12,7 +12,7 @@ var auth = require('./auth');
 var config = require( '../../config/environment' );
 FB.setAccessToken( config.FB_APPID + "|" + config.FB_APPSECRET );
 
-router.post('/exchange', function(req, res, next) {
+router.post('/', function(req, res, next) {
 	if (!req.body) return res.status(400).send('missing request body.');
 	if (!req.body.token) return res.status(400).send('missing token.');
 	if (!req.body.provider) return res.status(400).send('missing token provider.');

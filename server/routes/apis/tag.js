@@ -7,55 +7,62 @@ var express = require('express'),
 	MetaInspector = require('node-metainspector'),
 	mongoose = require('mongoose'),
 	auth = require('./auth.js'),
-	Tag = mongoose.model('Tag');
+	TagService = require('../../services/TagService'),
+	Tag = mongoose.model('Tag'),
+	User = mongoose.model('User');
 
 // Get tag info ( All or Specific )//
 router.get('/', auth, function(req, res, next) {
 	var user_id = req.query.user_id || req.body.user_id,
-		tagName = req.query.tagName || req.body.tagName;
+		name = req.query.name || req.body.name,
+		tag_id = req.query.tag_id || req.body.tag_id;
 
 	if (!user_id) return res.status(400).send('missing query user_id.');
 
-	Tag
-	.findAsync({
-		user_id : user_id 
-	})
-	.then(function (tags) {
-		res.send(tags)
-	})
-	.catch(function (err) {
-		next(err);
-	});
+	if (!tag_id){
+		Tag
+		.findAsync({
+			user_id : user_id 
+		})
+		.then(function (tags) {
+			res.status(200).send(tags)
+		})
+		.catch(function (err) {
+			next(err);
+		});
+	} else {
+		Tag
+		.findById({
+			_id : tag_id
+		})
+		.then(function(tag){
+			res.status(200).send(tag)
+		})
+	}
 
 });
 
-// Push new tag into DB //
+// Push new tag & refresh tag //
 router.post('/', auth, function(req,res,next) { 
-	var tagName = req.query.tagName || req.body.tagName,
+	var name = req.query.name || req.body.name,
 		user_id = req.user.id,
 		friendList = req.query.friendList || req.body.friendList;
-		console.log(req.body)
 	
-	// Find if tagName already exist //
-	Tag
-	.findOne({
-		tagName : tagName
+	// Find if name already exist //
+	Tag.findOne({
+		name : name
 	})
 	.then(function(tag){
+		console.log(tag)
 		if(!tag){
 			var newTag = new Tag();
 
-			newTag.tagName 	= tagName;
+			newTag.name 	= name;
 			newTag.user_id	= user_id;
 			newTag.friendList = friendList;
-			console.log(newTag);
 
-			newTag.save(function(err, tag){
-				if(!err)
-					return res.status(200).send('[ Tag ] - New tag ' + tag.tagName + ' saved.');
-				else
-					return res.status(400).send(err);
-			})
+			TagService.addTag(newTag, user_id, res);
+
 		} else {
 			console.log(tag)
 			for (var i = 0; i < friendList.length; i++){
@@ -65,16 +72,39 @@ router.post('/', auth, function(req,res,next) {
 			}
 			tag.save(function(err, tag, count){
 				if (!err)
-					return res.status(200).send('[ Tag ] - Tag ' + tag.tagName + ' updated.')
+					return res.status(200).send('[ Tag ] - Tag ' + tag.name + ' updated.')
 				else
 					return res.status(400).send(err);
 			})
 		}
 	})
-	.catch(function(err){
-		next(err);
-	})
+	
 });
+
+router.delete('/', auth, function(req, res, next){
+
+	var name = req.query.name || req.body.name,
+		tag_id = req.query.tag_id || req.body.tag_id;
+	
+	// Find if name already exist //
+	Tag.findById({
+		_id : tag_id
+	})
+	.then(function(tag){
+		if (tag)
+			TagService.removeTag(tag, tag.user_id, res);
+		else
+			return res.status(401).send('[ Tag ] - Tag not found.')
+	})
+
+})
+
+
+
+
+
+
+
 
 Array.prototype.contains = function(obj) {
     var i = this.length;

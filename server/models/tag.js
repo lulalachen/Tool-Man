@@ -7,10 +7,10 @@ var mongoose = require('mongoose')
 
 
 var schema = new Schema({ 
-	user_id : { type: Schema.Types.ObjectId, required: true },
-	tagName : { type: String, required: true },	
+	user_id : { type: String, required: true,sparse: true },
+	name : { type: String, required: true, sparse: true },	
 	friendList : { type: Array },
-	createdAt : { type : Date, required: true, default: Date.now }
+	createdAt : { type : Date, default: Date.now }
 });
  
 var Tag = mongoose.model('Tag', schema);

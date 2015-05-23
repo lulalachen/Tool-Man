@@ -11,10 +11,7 @@ var schema = new Schema({
 	fbId : { type: String },
 	email : { type: String },
 	name : { type: String },
-	tagLists : { 
-		count : { type : Number, required : true, default : 0 },
-		tagNames : Array,
-	}
+	tags : Array
 });
  
 var User = mongoose.model('User', schema);
