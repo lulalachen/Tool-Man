@@ -77,6 +77,7 @@ router.post('/', function(req, res, next) {
 
 	if (!verifyTokenFrom[req.body.provider]) return res.status(401).send('Sorry, we are not support ' + req.body.provide + ' currently.');
 	verifyTokenFrom[req.body.provider](function (err, user) {
+		console.log(req.body)
 		if (err) return res.status(401).send(err.message);
 		var token = TokenService.issueToken({
 			id: user.id

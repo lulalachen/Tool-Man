@@ -7,7 +7,7 @@ var mongoose = require('mongoose')
 
 
 var schema = new Schema({ 
-	user_id : { type: String, required: true,sparse: true },
+	user_id : { type: String, required: true, sparse: true },
 	name : { type: String, required: true, sparse: true },	
 	friendList : { type: Array },
 	createdAt : { type : Date, default: Date.now }

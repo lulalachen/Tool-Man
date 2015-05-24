@@ -1,22 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="ngTool" ng-csp>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="css/popup.css">
-        <link rel="stylesheet" href="js/ng-tags-input/ng-tags-input.css">
-        <link rel="stylesheet" href="js/ng-tags-input/ng-tags-input.bootstrap.css">
+        <link rel="stylesheet" href="./public/css/style.css">
+        <link rel="stylesheet" href="./public/js/ng-tags-input/ng-tags-input.css">
+        <link rel="stylesheet" href="./public/js/ng-tags-input/ng-tags-input.bootstrap.css">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 
     </head>
-    <body>
-        <header>
+    <body ng-controller="toolCtrl">
+
+        <header class="container" ng-show="fbLogined">
             <h3>朋友分類器</h3>
             <div class="row">
               <div class="col-xs-6 col-md-3">
-                <img src="../img/Slice 1.png" style="width:60px">
+                <img src="./public/img/Slice 1.png" style="width:60px">
               </div> 
             </div>
+            <form action="popup_submit" method="get" accept-charset="utf-8">
+
+            </form>
         </header>
         <!-- <div ng-show="bookmark">
             <button class="btn-bookmark">匯入您的書籤</button>
@@ -53,17 +57,17 @@
                 </ul>
               </form>
         </div> -->
-        <!-- <div ng-show="fbLogin" id="fb-root">
+        <div ng-hide="fbLogined" id="fb-root">
             
-            <a target="_blank" href="https://www.facebook.com/dialog/oauth?client_id=421496681325151&response_type=token&scope=email&redirect_uri=http://www.facebook.com/connect/login_success.html&scope=publish_actions&response_type=token"><i class="fa fa-facebook-square fa-4x"></i></a>
-        </div> -->
+            <a target="_blank" href="https://www.facebook.com/dialog/oauth?client_id=421496681325151&response_type=token&scope=email,user_friends&redirect_uri=http://www.facebook.com/connect/login_success.html&scope=publish_actions&response_type=token"><i class="fa fa-facebook-square fa-4x"></i></a>
+        </div>
         
-        <script type="text/javascript" src="js/lib/jquery-1.8.2.min.js"></script>
-        <script type="text/javascript" src="js/lib/angular.min.js"></script>
+        <script type="text/javascript" src="./public/js/lib/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="./public/js/lib/angular.min.js"></script>
         <!-- // <script type="text/javascript" src="js/ng-tags-input/ng-tags-input.js"></script> -->
         
-        <script type="text/javascript" src="js/app/app.js"></script>
-        <script type="text/javascript" src="js/app/background.js"></script>
-        <script type="text/javascript" src="js/app/popup.js"></script>
+        <script type="text/javascript" src="./public/js/app/app.js"></script>
+        <script type="text/javascript" src="./public/js/app/background.js"></script>
+        <script type="text/javascript" src="./public/js/app/popup.js"></script>
     </body>
 </html>
